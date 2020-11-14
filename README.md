@@ -32,4 +32,4 @@ This combination requires [wait-for-it.sh](https://github.com/vishnubob/wait-for
 
 ### External volumes
 
-- ./data: This volume contains PukiWiki user's data.
+- ./wiki: This volume contains PukiWiki user's data.
