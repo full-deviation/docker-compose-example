@@ -1,0 +1,40 @@
+version: "3.8"  # docker-composeファイル形式v3.8
+services:       # サービスの一覧
+  # 【サービス名】gitbucket
+  gitbucket:
+    # 【イメージ】DockerHub上のリポジトリを指定
+    image: gitbucket/gitbucket:latest                    # gitbucketの最新版を使用
+    # 【ポート番号】(書式: - ホスト上のポート番号:Docker上のポート番号)
+    ports:
+      - 8080:8080                                        # HTTP
+      - 29418:29418                                      # SSH
+    # 【ボリューム】(書式: - ホスト上のパス:Docker上のパス)
+    volumes:
+      - ./data:/gitbucket                                # Docker上の"/gitbucket"を"./data"に保存する
+    # 【再起動】
+    restart: unless-stopped                              # 手動で停止されない限りは自動起動
+    # 【依存先】(書式: - サービス名)
+    depends_on:
+      - db                                               # サービス名"db"に依存する
+    # 【環境変数】
+    environment:
+      - GITBUCKET_DB_URL=jdbc:postgresql://db/gitbucket  # DB接続先
+      - GITBUCKET_DB_USER=gitbucket                      # DBユーザ
+      - GITBUCKET_DB_PASSWORD=gitbucket                  # DBパスワード
+    # 【コマンド】wait-for-it.shでホスト名"db"のポート番号5432が接続可能になるのを待ち、成功したら"java -jar /opt/gitbucket.war"を実行
+    command: ["/gitbucket/wait-for-it.sh", "db:5432", "--", "java", "-jar", "/opt/gitbucket.war"]
+
+  # 【サービス名】db
+  db:
+    # 【イメージ】
+    image: postgres:11-alpine          # PostgreSQL11のApline Linux版を使用
+    # 【ボリューム】
+    volumes:
+      - ./db:/var/lib/postgresql/data  # Docker上の"/var/lib/postgresql/data"を"./db"に保存する
+    # 【再起動】
+    restart: unless-stopped            # 手動で停止されない限りは自動起動
+    # 【環境変数】
+    environment:
+      - POSTGRES_DB=gitbucket          # DB名
+      - POSTGRES_USER=gitbucket        # DBユーザ
+      - POSTGRES_PASSWORD=gitbucket    # DBパスワード
