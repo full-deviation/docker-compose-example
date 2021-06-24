@@ -8,7 +8,8 @@ services:       # サービスの一覧
     ports:                             # ポート番号
       - 9080:80                        # HTTP
     # 【ボリューム】(書式: - ホスト上のパス:Docker上のパス)
-    volumes:                           # ボリューム
-      - ./wiki:/ext                    # データ保管場所
+    volumes:                                              # ボリューム
+      - ./wiki:/ext                                       # データ保管場所
+      - ./include.inc.php:/var/www/plugin/include.inc.php # includeの最大数を変更する
     # 【再起動】
     restart: unless-stopped            # 手動で停止されない限りは自動起動
