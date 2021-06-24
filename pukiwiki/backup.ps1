@@ -2,6 +2,6 @@
 # Backup to zip archive #
 #########################
 $SrcPath = ".\*"
-$DstPath = "C:\Dropbox\pukiwiki-backup.zip"
+$DstPath = "E:\Shared\Dropbox\Docker\pukiwiki-backup.zip"
 
 Compress-Archive -Path $SrcPath -DestinationPath $DstPath -Force
