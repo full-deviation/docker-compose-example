@@ -21,7 +21,7 @@ LABEL org.opencontainers.image.authors="Original:Abe Masahiro <pen@thcomp.org>, 
 RUN apk add --no-cache \
             h2o \
             perl \
-            php7-cgi
+            php-cgi
 
 COPY --from=builder /pukiwiki /var/www
 COPY rootfs /
